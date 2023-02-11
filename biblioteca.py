@@ -12,11 +12,11 @@ print("Conectado")
 
 
 
-print(f'''Bem-Vindo
+"""print(f'''Bem-Vindo
 Escolha:
-1.Consultar
-2.Cadastros ou Atualização
-3.Alugueis''')
+1.Consultar 
+2.Cadastros   
+3.Alugueis''')"""
 
 
 
@@ -88,10 +88,58 @@ def menuconsultarClientes ():
             for cpfcliente in resultadocpfcliente:
                 print(f"ID: {cpfcliente[0]} - Nome: {cpfcliente[1]} - CPF: {cpfcliente[2]} - Limite de Livros: {cpfcliente[3]} \n")
 
+                #CRIAR O BUSCAR NOME
 
 
-menuconsultarClientes()
 
 
 
-             
+def menuCadastros():
+    print('''Escolha:
+    1. Livros
+    2. Clientes
+    0. Voltar Menu Principal''')
+    escolhamenucadastro = input("Digite: ")
+    match escolhamenucadastro:
+        case "1":
+            print('''Escolha:
+    1. Novo Cadastro
+    2. Atualizar Cadastro
+    3. Deletar Cadastro
+    4. Voltar Menu Principal''')
+
+                #menu1
+
+            escolhanovocadastroLivros = input("Digite: ")
+            match escolhanovocadastroLivros:
+                case "1":
+                    
+                    nome_novo_livro = input('Digite nome novo Livro: ')
+                    autor_novo_livro = input('Digite nome do autor: ')
+                    categoria_novo_livro = input('Digite a categoria: ')
+
+                    sql_inserir_livro = f''' INSERT INTO livros (nome, autor, categoria) VALUES ("{nome_novo_livro}", "{autor_novo_livro}", "{categoria_novo_livro}")'''
+                    cursor.execute(sql_inserir_livro)
+                    conexao.commit()
+                    cursor.close()
+                    conexao.close()
+                    print("Cadastro Realizado com Sucesso")
+
+
+        case "2":
+            print('''Escolha:
+            1. Novo Cadastro
+            2. Atualizar Cadastro
+            3. Deletar Cadastro
+            4. Voltar Menu Principal''')
+
+
+
+
+menuCadastros()
+
+
+
+
+
+

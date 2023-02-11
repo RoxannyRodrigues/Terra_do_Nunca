@@ -93,7 +93,6 @@ def menuconsultarClientes ():
 
 
 
-
 def menuCadastros():
     print('''Escolha:
     1. Livros
@@ -108,7 +107,9 @@ def menuCadastros():
     3. Deletar Cadastro
     4. Voltar Menu Principal''')
 
-                #menu1
+                #menu1LIVRO
+
+                #Novocadastro
 
             escolhanovocadastroLivros = input("Digite: ")
             match escolhanovocadastroLivros:
@@ -124,6 +125,48 @@ def menuCadastros():
                     cursor.close()
                     conexao.close()
                     print("Cadastro Realizado com Sucesso")
+                
+                #Atualizarcadastro
+
+                case "2":
+                    
+                    idbuscado = input("Digite id do livro deseja alterar: ")
+                    print ('''Qual dado você deseja alterar:
+                    1. Nome
+                    2. Autor
+                    3. Categoria''')
+                    escolhadadolivro = input("Digite: ")
+                    match escolhadadolivro:
+                        case "1":
+                            nomenovo = input("Digite sua mudança")
+                            sql_atualizar_livro = f'UPDATE livros SET nome = "{nomenovo}" WHERE id = "{idbuscado}"'
+                            cursor.execute(sql_atualizar_livro)
+                            conexao.commit()
+                            cursor.close()
+                            conexao.close()
+                            print("Atualizado com Sucesso")
+                        
+                        case "2":
+                            nomeautor = input("Digite sua mudança")
+                            sql_atualizar_autor = f'UPDATE livros SET autor = "{nomeautor}" WHERE id = "{idbuscado}"'
+                            cursor.execute(sql_atualizar_autor)
+                            conexao.commit()
+                            cursor.close()
+                            conexao.close()
+                            print("Atualizado com Sucesso")
+                        
+                        case "3":
+                            nomecategoria = input("Digite sua mudança")
+                            sql_atualizar_categoria = f'UPDATE livros SET autor = "{nomecategoria}" WHERE id = "{idbuscado}"'
+                            cursor.execute(sql_atualizar_categoria)
+                            conexao.commit()
+                            cursor.close()
+                            conexao.close()
+                            print("Atualizado com Sucesso")
+                
+                case "3":
+                    dss = "legal"
+
 
 
         case "2":

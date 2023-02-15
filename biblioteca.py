@@ -1,22 +1,23 @@
 import mysql.connector
 
-conexao = mysql.connector.connect(
-    host = 'localhost',
-    user = 'root',
-    password = '7289',
-    database = 'biblioteca'
-)
+def conexao ():
+    conexao = mysql.connector.connect(
+        host = 'localhost',
+        user = 'root',
+        password = '7289',
+        database = 'biblioteca'
+    )
 
-cursor = conexao.cursor()
-print("Conectado")
+    cursor = conexao.cursor()
+    print("Conectado")
 
-def visualizarBanco(self,sql):
+def visualizarBanco(sql):
     cursor = conexao.cursor()
     cursor.execute(sql)
     resultado = cursor.fetchall()
+    print(f"{resultado}")
     cursor.close()
-    return resultado
-
+    
 
 def manipularBanco(sql):
     cursor = conexao.cursor()
@@ -27,7 +28,7 @@ def manipularBanco(sql):
 
     cursor.close()
 
-    print("Feito")
+    print("Processo realizado com sucesso")
 
 
 
@@ -123,11 +124,7 @@ def menuCadastrosLivro():
             categoria_novo_livro = input('Digite a categoria: ')
 
             sql_inserir_livro = f''' INSERT INTO livros (nome, autor, categoria) VALUES ("{nome_novo_livro}", "{autor_novo_livro}", "{categoria_novo_livro}")'''
-            cursor.execute(sql_inserir_livro)
-            conexao.commit()
-            cursor.close()
-            conexao.close()
-            print("Cadastro Realizado com Sucesso")
+            manipularBanco(sql_inserir_livro)
         
         #Atualizarcadastro
 
@@ -143,38 +140,24 @@ def menuCadastrosLivro():
                 case "1": #NOME
                     nomenovo = input("Digite sua mudança")
                     sql_atualizar_livro = f'UPDATE livros SET nome = "{nomenovo}" WHERE id = "{idbuscado}"'
-                    cursor.execute(sql_atualizar_livro)
-                    conexao.commit()
-                    cursor.close()
-                    conexao.close()
-                    print("Atualizado com Sucesso")
-                
+                    manipularBanco(sql_atualizar_livro)
+
                 case "2": #AUTOR
                     nomeautor = input("Digite sua mudança")
                     sql_atualizar_autor = f'UPDATE livros SET autor = "{nomeautor}" WHERE id = "{idbuscado}"'
-                    cursor.execute(sql_atualizar_autor)
-                    conexao.commit()
-                    cursor.close()
-                    conexao.close()
-                    print("Atualizado com Sucesso")
+                    manipularBanco(sql_atualizar_autor)
                 
                 case "3": #CAATEGORIA
                     nomecategoria = input("Digite sua mudança")
                     sql_atualizar_categoria = f'UPDATE livros SET autor = "{nomecategoria}" WHERE id = "{idbuscado}"'
-                    cursor.execute(sql_atualizar_categoria)
-                    conexao.commit()
-                    cursor.close()
-                    conexao.close()
-                    print("Atualizado com Sucesso")
+                    manipularBanco(sql_atualizar_categoria)
+
         
         case "3": #DELETARLIVRO
             idlivrodeletar = input("Digite ID livro vai ser deletado: ")
             VisualizarLIvrodelete = f'''SELECT nome FROM livros WHERE id = {idlivrodeletar}'''
-            cursor.execute(VisualizarLIvrodelete)            
-            resultado = cursor.fetchall()
-            print(f"{resultado}")
-            cursor.close()
-            #conexao.close()
+            visualizarBanco(VisualizarLIvrodelete)
+
 
             print (f'''
 
@@ -185,13 +168,8 @@ def menuCadastrosLivro():
             opcaoescolhida = input("Digite: ")
             match opcaoescolhida:
                 case "1":
-                    cursor2 = conexao.cursor()
                     deletarlivro = f'''DELETE FROM livros WHERE id = "{idlivrodeletar}"'''
-                    cursor2.execute(deletarlivro)
-                    conexao.commit()
-                    cursor2.close()
-                    conexao.close()
-                    print ("Deletado com Sucesso")
+                    manipularBanco(deletarlivro)
                         
 
 
@@ -216,52 +194,35 @@ def menuCadastrosClientes():
             manipularBanco(sql_inserir_cliente)
 
         
-        #Atualizarcadastro
-
         case "2":   #menu Atualizar 
             
             idbuscado = input("Digite id do cliente deseja alterar: ")
             print ('''Qual dado você deseja alterar:
             1. Nome
             2. Cpf
-            3. Limite de Livros''')
-            escolhadadolivro = input("Digite: ")
-            match escolhadadolivro:
+            3. Limite de Livros
+            ''')
+            escolhadocliente = input("Digite: ")
+            match escolhadocliente:
                 case "1": #NOME
-                    nomenovo = input("Digite sua mudança")
-                    sql_atualizar_livro = f'UPDATE livros SET nome = "{nomenovo}" WHERE id = "{idbuscado}"'
-                    cursor.execute(sql_atualizar_livro)
-                    conexao.commit()
-                    cursor.close()
-                    conexao.close()
-                    print("Atualizado com Sucesso")
+                    nomenovo = input("Digite sua mudança: ")
+                    sql_atualizar_nome = f'UPDATE cliente SET nome = "{nomenovo}" WHERE id = "{idbuscado}"'
+                    manipularBanco(sql_atualizar_nome)
                 
                 case "2": #AUTOR
-                    nomeautor = input("Digite sua mudança")
-                    sql_atualizar_autor = f'UPDATE livros SET autor = "{nomeautor}" WHERE id = "{idbuscado}"'
-                    cursor.execute(sql_atualizar_autor)
-                    conexao.commit()
-                    cursor.close()
-                    conexao.close()
-                    print("Atualizado com Sucesso")
+                    cpfnovo = input("Digite sua mudança")
+                    sql_atualizar_cpf = f'UPDATE cliente SET cpf = "{cpfnovo}" WHERE id = "{idbuscado}"'
+                    manipularBanco(sql_atualizar_cpf)
                 
-                case "3": #CAATEGORIA
-                    nomecategoria = input("Digite sua mudança")
-                    sql_atualizar_categoria = f'UPDATE livros SET autor = "{nomecategoria}" WHERE id = "{idbuscado}"'
-                    cursor.execute(sql_atualizar_categoria)
-                    conexao.commit()
-                    cursor.close()
-                    conexao.close()
-                    print("Atualizado com Sucesso")
+                case "3": #CATEGORIA
+                    novolimite = input("Digite sua mudança")
+                    sql_atualizar_limite = f'UPDATE cliente SET `limite de livros` = "{novolimite}" WHERE id = "{idbuscado}"'
+                    manipularBanco(sql_atualizar_limite)
         
         case "3": #DELETARLIVRO
             idlivrodeletar = input("Digite ID livro vai ser deletado: ")
             VisualizarLIvrodelete = f'''SELECT nome FROM livros WHERE id = {idlivrodeletar}'''
-            cursor.execute(VisualizarLIvrodelete)            
-            resultado = cursor.fetchall()
-            print(f"{resultado}")
-            cursor.close()
-            #conexao.close()
+            visualizarBanco(VisualizarLIvrodelete)
 
             print (f'''
 
@@ -272,17 +233,12 @@ def menuCadastrosClientes():
             opcaoescolhida = input("Digite: ")
             match opcaoescolhida:
                 case "1":
-                    cursor2 = conexao.cursor()
                     deletarlivro = f'''DELETE FROM livros WHERE id = "{idlivrodeletar}"'''
-                    cursor2.execute(deletarlivro)
-                    conexao.commit()
-                    cursor2.close()
-                    conexao.close()
-                    print ("Deletado com Sucesso")
+                    manipularBanco(deletarlivro)
                         
             
 
-menuCadastrosClientes()
+
                    
 
                 

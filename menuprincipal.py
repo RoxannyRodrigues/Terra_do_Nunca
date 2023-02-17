@@ -1,8 +1,19 @@
 import mysql.connector
-
 from biblioteca import *
 
-def menuprincipal ():
+conexao = mysql.connector.connect(
+host = 'localhost',
+user = 'root',
+password = '7289',
+database = 'biblioteca'
+)
+
+cursor = conexao.cursor()
+print("Conectado")
+
+
+
+def menuprincipal():
         
     print(f'''Bem-Vindo
     Escolha:
@@ -20,4 +31,6 @@ def menuprincipal ():
             match escolha2:
                 case "1":
                     menuconsultarLivros()
-            
+
+
+menuprincipal()

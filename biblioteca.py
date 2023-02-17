@@ -34,63 +34,111 @@ def manipularBanco(sql):
 
 def menuconsultarLivros ():
 
-    print(f'''
+    
+    while True:
+        print(f'''
     Selecione o que deseja fazer:
     1. Consultar Todos os Livros
     2. Consultar por ID do Livro
     0. Voltar Menu Principal''')
 
-    escolha = (input("Digite: "))
-    match escolha:
-        case "1":
-            lista_livros = f' SELECT * FROM livros'
-            visualizarBanco(lista_livros)
 
-        case "2":
-            idlivroescolhido = input("Digite o ID: ")
-            sqlid = f'''SELECT * FROM livros
-                        WHERE id = {idlivroescolhido}'''
-            visualizarBanco(sqlid)
-        
-        case "0":
-            menuprincipal()
+        escolha = (input("Digite: "))
+        match escolha:
+            case "1":
+                lista_livros = f' SELECT * FROM livros'
+                visualizarBanco(lista_livros)
+
+                print(f'''Que deseja fazer agora?
+    1. Voltar
+    2. Volta Menu Principal''')
+                escolhafinal = input("Digite: ")
+                match escolhafinal:
+                    case "1":
+                        print("")
+                    case "2":
+                        menuprincipal()
+                        break
+
+            case "2":
+                idlivroescolhido = input("Digite o ID: ")
+                sqlid = f'''SELECT * FROM livros
+                            WHERE id = {idlivroescolhido}'''
+                visualizarBanco(sqlid)
+                print(f'''Que deseja fazer agora?
+    1. Voltar
+    2. Volta Menu Principal''')
+                escolhafinal = input("Digite: ")
+                match escolhafinal:
+                    case "1":
+                        print("")
+                    case "2":
+                        menuprincipal()
+                        break
+             
+            
+            case "0":
+                menuprincipal()
+            
+            #verificar com tarik
+            case _:
+                print ("Você escolheu uma opção inválida")
         
           
 
 def menuconsultarClientes ():
 
-    print(f'''
-    Selecione o que deseja fazer:
-    1. Buscar Cliente por ID
-    2. Buscar Cleinte por CPF
-    ''')
-    escolha = input("Digite: ")
-    match escolha:
-        case "1":
-            iddocliente = input("Digite o ID: ")
-            sqlcliente = f'''SELECT * FROM cliente
-                        WHERE ID = {iddocliente} '''
-            cursor.execute(sqlcliente)            
-            resultadocliente = cursor.fetchall()
-            cursor.close()
-            conexao.close()
+    while True:
+        print(f'''
+        Selecione o que deseja fazer:
+        1. Buscar Cliente por ID
+        2. Buscar Cleinte por CPF
+        0. Voltar Menu Principal
+        ''')
+        escolha = input("Digite: ")
 
-            for client in resultadocliente:
-                print(f"ID: {client[0]} - Nome: {client[1]} - CPF: {client[2]} - Limite de Livros: {client[3]} \n")
-        
-        case "2":
-            cpfdocliente = input("Digite o CPF: ")
-            sqlcliente = f'''SELECT * FROM cliente
-                        WHERE cpf = {cpfdocliente}'''
-            cursor.execute(sqlcliente)            
-            resultadocpfcliente = cursor.fetchall()
-            cursor.close()
-            conexao.close()
+        match escolha:
+            case "1":
+                iddocliente = input("Digite o ID: ")
+                sqlcliente = f'''SELECT * FROM cliente
+                            WHERE id = {iddocliente} '''
+                visualizarBanco(sqlcliente)
 
-            for cpfcliente in resultadocpfcliente:
-                print(f"ID: {cpfcliente[0]} - Nome: {cpfcliente[1]} - CPF: {cpfcliente[2]} - Limite de Livros: {cpfcliente[3]} \n")
+                print(f'''Que deseja fazer agora?
+        1. Voltar
+        2. Volta Menu Principal''')
+                escolhafinal = input("Digite: ")
+                match escolhafinal:
+                    case "1":
+                            print("")
+                    case "2":
+                        menuprincipal()
+                        break
 
-                #CRIAR O BUSCAR NOME
+            
+            case "2":
+                cpfdocliente = input("Digite o CPF: ")
+                sqlcliente = f'''SELECT * FROM cliente
+                            WHERE cpf = {cpfdocliente}'''
+                visualizarBanco(sqlcliente)
+
+                print(f'''Que deseja fazer agora?
+        1. Voltar
+        2. Volta Menu Principal''')
+                escolhafinal = input("Digite: ")
+                match escolhafinal:
+                    case "1":
+                            print("")
+                    case "2":
+                        menuprincipal()
+                        break
+            
+            case "0":
+                menuprincipal()
+            
+
+
+                    #CRIAR O BUSCAR NOME
 
 
 #MENUCADASTROS
@@ -230,9 +278,9 @@ def menuCadastrosClientes():
 
 def menuprincipal():
         
-    print(f'''Bem-Vindo
+    print(f'''Bem-Vindo - Menu Principal
     Escolha:
-    1.Consultar 
+    1.Consultas 
     2.Cadastros   
     3.Alugueis''')
 

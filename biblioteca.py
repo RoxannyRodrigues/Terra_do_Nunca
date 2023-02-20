@@ -431,7 +431,7 @@ def menualuguel():
 
                     print (f'''
 
-                    Tem certeza que você quer Deletar?
+                    Confira a Devolução?
                     1. SIM
                     2. Não''')
 
@@ -502,7 +502,10 @@ def menuprincipal():
                     menuCadastrosClientes()
                 case "3":
                     menuprincipal()
+        
+        case "3":
+            menualuguel()
 
-menualuguel()
+menuprincipal()
                   
                

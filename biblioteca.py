@@ -37,9 +37,22 @@ def manipularBanco(sql):
 #--------------------------------
 
 #-----------MENU CONSULTAR LIVROS---_-----#
+def menuvoltar():
+    print(f'''Que deseja fazer agora?
+    1. Voltar
+    2. Volta Menu Principal''')
+    escolhafinal = input("Digite: ")
+    match escolhafinal:
+        case "1":
+            print("")
+        case "2":
+            menuprincipal()
+        
+           
 
 def menuconsultarLivros ():
 
+    #escolha = "0"
     
     while True:
         print(f'''
@@ -57,16 +70,7 @@ def menuconsultarLivros ():
                 for liv in resultado:
                     print(f' ID: {liv[0]} - Nome: {liv[1]} - Autor: {liv[2]} - Categoria: {liv[3]} \n')
 
-                print(f'''Que deseja fazer agora?
-    1. Voltar
-    2. Volta Menu Principal''')
-                escolhafinal = input("Digite: ")
-                match escolhafinal:
-                    case "1":
-                        print("")
-                    case "2":
-                        menuprincipal()
-                        break
+                menuvoltar()
 
             case "2":  #CONSULTA POR ID
                 idlivroescolhido = input("Digite o ID: ")
@@ -77,24 +81,16 @@ def menuconsultarLivros ():
                     print(f' ID: {liv[0]} - Nome: {liv[1]} - Autor: {liv[2]} - Categoria: {liv[3]} \n')
 
 
-                print(f'''Que deseja fazer agora?
-    1. Voltar
-    2. Volta Menu Principal''')
-                escolhafinal = input("Digite: ")
-                match escolhafinal:
-                    case "1":
-                        print("")
-                    case "2":
-                        menuprincipal()
-                        break
-             
-            
+                menuvoltar()
+                         
             case "0":
                 menuprincipal()
             
             #verificar com tarik
             case _:
-                print ("Você escolheu uma opção inválida")
+                print (f'Digite uma opção válida')
+                
+              
         
 
 #-----------MENU CONSULTAR CLIENTE--------#          
@@ -106,6 +102,7 @@ def menuconsultarClientes ():
         Selecione o que deseja fazer:
         1. Buscar Cliente por ID
         2. Buscar Cliente por CPF
+        3. Consultar Aluguel de Cliente
         0. Voltar Menu Principal
         ''')
         escolha = input("Digite: ")
@@ -150,12 +147,56 @@ def menuconsultarClientes ():
                         menuprincipal()
                         break
             
+            case "3":
+                id_cliente_consulta = input("Digite o ID do cliente: ")
+                sql_consulta_aluguel = f'''SELECT * FROM aluguel
+                                           WHERE `id cliente` = {id_cliente_consulta} '''
+                resultadoidaluguel = visualizarBanco(sql_consulta_aluguel)
+                for liv in resultadoidaluguel: 
+                    (f' ID: {liv[0]} - Data Aluguel: {liv[1]} - ID cliente: {liv[2]} - ID livro: {liv[3]} \n')
+
+
+                sql_consulta_livro_alugado = f'''SELECT nome FROM livros WHERE id = {liv[3]}'''
+                resultadoidlivro = visualizarBanco(sql_consulta_livro_alugado)
+              
+                for Alug2 in resultadoidlivro:
+                    print (f' Livro: {Alug2[0]} ')
+
+            
             case "0":
                 menuprincipal()
             
 
 
                     #CRIAR O BUSCAR NOME
+
+#-----------MENU CONSULTAR Aluguel--------#         
+
+def menuconsultarAluguel ():
+    escolhanovoAluguel = input("Digite: ")
+    match escolhanovoAluguel:
+
+        case "1":
+            iddoaluguel = input("Digite o ID do aluguel: ")
+            sqldealuguel = f'''SELECT * FROM aluguel
+                            WHERE id = {iddoaluguel} '''
+            resultadoidaluguel = visualizarBanco(sqldealuguel)
+            for liv in resultadoidaluguel: 
+                (f' ID: {liv[0]} - Data Aluguel: {liv[1]} - ID cliente: {liv[2]} - ID livro: {liv[3]} \n')
+
+
+            sqlclientealugado = f'''SELECT * FROM cliente WHERE id = {liv[2]}'''
+            resultadoidcliente = visualizarBanco(sqlclientealugado)
+
+
+            sqllivroAlugado = f'''SELECT nome FROM livros WHERE id = {liv[3]}'''
+            resultadoidlivro = visualizarBanco(sqllivroAlugado)
+
+            for Alug in resultadoidcliente:
+                print(f' ID: {Alug[0]} - Nome: {Alug[1]} - CPF: {Alug[2]} \n')
+            
+            for Alug2 in resultadoidlivro:
+                print (f' Livro: {Alug2[0]} ')
 
 
 #-----------MENU CADASTRAOS LIVROS--------# 
@@ -164,10 +205,10 @@ def menuCadastrosLivro():
 
     while True:
         print('''Escolha:
-        1. Novo Cadastro
-        2. Atualizar Cadastro
-        3. Deletar Cadastro
-        0. Voltar Menu Principal''')
+    1. Novo Cadastro
+    2. Atualizar Cadastro
+    3. Deletar Cadastro
+    0. Voltar Menu Principal''')
 
         #Novocadastro
 
@@ -182,8 +223,8 @@ def menuCadastrosLivro():
                 sql_inserir_livro = f''' INSERT INTO livros (nome, autor, categoria) VALUES ("{nome_novo_livro}", "{autor_novo_livro}", "{categoria_novo_livro}")'''
                 manipularBanco(sql_inserir_livro)
                 print(f'''Que deseja fazer agora?
-        1. Voltar
-        2. Volta Menu Principal''')
+    1. Voltar
+    2. Volta Menu Principal''')
                 escolhafinal = input("Digite: ")
                 match escolhafinal:
                     case "1":
@@ -199,9 +240,9 @@ def menuCadastrosLivro():
                 
                 idbuscado = input("Digite id do livro deseja alterar: ")
                 print ('''Qual dado você deseja alterar:
-                1. Nome
-                2. Autor
-                3. Categoria''')
+    1. Nome
+    2. Autor
+    3. Categoria''')
                 escolhadadolivro = input("Digite: ")
                 match escolhadadolivro:
                     case "1": #NOME
@@ -209,8 +250,8 @@ def menuCadastrosLivro():
                         sql_atualizar_livro = f'UPDATE livros SET nome = "{nomenovo}" WHERE id = "{idbuscado}"'
                         manipularBanco(sql_atualizar_livro)
                         print(f'''Que deseja fazer agora?
-        1. Voltar
-        2. Volta Menu Principal''')
+    1. Voltar
+    2. Volta Menu Principal''')
                         escolhafinal = input("Digite: ")
                         match escolhafinal:
                             case "1":
@@ -224,8 +265,8 @@ def menuCadastrosLivro():
                         sql_atualizar_autor = f'UPDATE livros SET autor = "{nomeautor}" WHERE id = "{idbuscado}"'
                         manipularBanco(sql_atualizar_autor)
                         print(f'''Que deseja fazer agora?
-        1. Voltar
-        2. Volta Menu Principal''')
+    1. Voltar
+    2. Volta Menu Principal''')
                         escolhafinal = input("Digite: ")
                         match escolhafinal:
                             case "1":
@@ -239,8 +280,8 @@ def menuCadastrosLivro():
                         sql_atualizar_categoria = f'UPDATE livros SET autor = "{nomecategoria}" WHERE id = "{idbuscado}"'
                         manipularBanco(sql_atualizar_categoria)
                         print(f'''Que deseja fazer agora?
-        1. Voltar
-        2. Volta Menu Principal''')
+    1. Voltar
+    2. Volta Menu Principal''')
                         escolhafinal = input("Digite: ")
                         match escolhafinal:
                             case "1":
@@ -261,9 +302,9 @@ def menuCadastrosLivro():
 
                 print (f'''
 
-        Tem certeza que você quer Deletar?
-        1. SIM
-        2. Não''')
+    Tem certeza que você quer Deletar?
+    1. SIM
+    2. Não''')
 
                 opcaoescolhida = input("Digite: ")
                 match opcaoescolhida:
@@ -272,15 +313,17 @@ def menuCadastrosLivro():
                         manipularBanco(deletarlivro)
                         
                         print(f'''Que deseja fazer agora?
-        1. Voltar
-        2. Volta Menu Principal''')
+    1. Voltar
+    2. Volta Menu Principal''')
                         escolhafinal = input("Digite: ")
                         match escolhafinal:
                             case "1":
-                                    print("")
+                                print("")
                             case "2":
                                 menuprincipal()
                                 break
+            case "0":
+                menuprincipal()
                                     
 #-----------MENU CADASTRAOS CLIENTES--------# 
 
@@ -288,10 +331,10 @@ def menuCadastrosClientes():
 
     while True:
         print('''Escolha:
-        1. Novo Cadastro
-        2. Atualizar Cadastro
-        3. Deletar Cadastro
-        0. Voltar Menu Principal''')
+    1. Novo Cadastro
+    2. Atualizar Cadastro
+    3. Deletar Cadastro
+    0. Voltar Menu Principal''')
 
         #Novocadastro
 
@@ -311,10 +354,10 @@ def menuCadastrosClientes():
                 
                 idbuscado = input("Digite id do cliente deseja alterar: ")
                 print ('''Qual dado você deseja alterar:
-                1. Nome
-                2. Cpf
-                3. Limite de Livros
-                ''')
+    1. Nome
+    2. Cpf
+    3. Limite de Livros
+    ''')
                 escolhadocliente = input("Digite: ")
                 match escolhadocliente:
                     case "1": #NOME
@@ -342,9 +385,9 @@ def menuCadastrosClientes():
 
                 print (f'''
 
-                Tem certeza que você quer Deletar?
-                1. SIM
-                2. Não''')
+    Tem certeza que você quer Deletar?
+    1. SIM
+    2. Não''')
 
                 opcaoescolhida = input("Digite: ")
                 match opcaoescolhida:
@@ -354,8 +397,8 @@ def menuCadastrosClientes():
                     
                     case "2":
                         print(f'''Que deseja fazer agora?
-        1. Voltar
-        2. Volta Menu Principal''')
+    1. Voltar
+    2. Volta Menu Principal''')
                         escolhafinal = input("Digite: ")
                         match escolhafinal:
                             case "1":
@@ -369,21 +412,21 @@ def menuCadastrosClientes():
                 break
                         
 
-#-----------MENU CADASTRAOS CLIENTES--------# 
+#-----------MENU ALUGUEL--------# 
 
 
 def menualuguel():
     
    while True:
         print(f'''
-        1. Consultar Aluguel
-        2. Cadastrar Aluguel
-        3. Devolução
-        0. Voltar Menu Principal
+    1. Consultar Aluguel
+    2. Cadastrar Aluguel
+    3. Devolução
+    0. Voltar Menu Principal
 
 
         ''')
-    
+        #------------------CONSULTA------------------#
         escolhanovoAluguel = input("Digite: ")
         match escolhanovoAluguel:
     
@@ -431,9 +474,9 @@ def menualuguel():
 
                     print (f'''
 
-                    Confira a Devolução?
-                    1. SIM
-                    2. Não''')
+    Confira a Devolução?
+    1. SIM
+    2. Não''')
 
                     opcaoescolhida = input("Digite: ")
                     match opcaoescolhida:
@@ -443,8 +486,8 @@ def menualuguel():
                         
                         case "2":
                             print(f'''Que deseja fazer agora?
-            1. Voltar
-            2. Volta Menu Principal''')
+    1. Voltar
+    2. Volta Menu Principal''')
                             escolhafinal = input("Digite: ")
                             match escolhafinal:
                                 case "1":
@@ -452,12 +495,6 @@ def menualuguel():
                                 case "2":
                                     menuprincipal()
                                     break
-
-
-                       
-
-
-
 
 
                         
@@ -479,6 +516,7 @@ def menuprincipal():
             print(f'''Escolha:
     1. Consultar Livros
     2. Consultar Clientes
+    3. Consultar Aluguel
     0. Voltar''')
             escolha2 = input("Digite: ")
             match escolha2:
@@ -486,6 +524,8 @@ def menuprincipal():
                     menuconsultarLivros()
                 case "2":
                     menuconsultarClientes()
+                case "3":
+                    menuconsultarAluguel
                 case "0":
                     menuprincipal()
         
@@ -505,7 +545,11 @@ def menuprincipal():
         
         case "3":
             menualuguel()
+        
+        case _:
+            print("Digitou algo errado")
 
-menuprincipal()
+
+menuprincipal() 
                   
                

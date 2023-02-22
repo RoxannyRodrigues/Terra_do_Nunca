@@ -76,8 +76,9 @@ def menuconsultarLivros ():         #falta validar str
 
             case "2":  #CONSULTA POR ID
                 while True:
-                    while True:
-                        idlivroescolhido = input('Digite o ID: ')
+                    idlivroescolhido = input('Digite o ID: ')
+                    try:
+                        idlivroescolhido = int(idlivroescolhido)
                         sqlid = f'''SELECT * FROM livros
                                     WHERE id = {idlivroescolhido}'''
                         resultadoid = visualizarBanco(sqlid)
@@ -86,10 +87,13 @@ def menuconsultarLivros ():         #falta validar str
                         else:
                             for liv in resultadoid:
                                 print(f' ID: {liv[0]} - Nome: {liv[1]} - Autor: {liv[2]} - Categoria: {liv[3]} \n')
+                                menuvoltar()
                             break
-                    break
+                    except ValueError:
+                        print("Digite um ID Válido")    
+               
 
-                menuvoltar()
+                 
                          
             case "0":
                 menuprincipal()

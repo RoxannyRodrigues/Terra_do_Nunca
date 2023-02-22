@@ -1,5 +1,6 @@
 import mysql.connector
 
+
 conexao = mysql.connector.connect(
 host = 'localhost',
 user = 'root',
@@ -47,10 +48,11 @@ def menuvoltar():
             print("")
         case "2":
             menuprincipal()
-        
-           
+        case _:
+            print("Opção Inválida")
+                
 
-def menuconsultarLivros ():
+def menuconsultarLivros ():         #falta validar str
 
     #escolha = "0"
     
@@ -73,13 +75,19 @@ def menuconsultarLivros ():
                 menuvoltar()
 
             case "2":  #CONSULTA POR ID
-                idlivroescolhido = input("Digite o ID: ")
-                sqlid = f'''SELECT * FROM livros
-                            WHERE id = {idlivroescolhido}'''
-                resultadoid = visualizarBanco(sqlid)
-                for liv in resultadoid:
-                    print(f' ID: {liv[0]} - Nome: {liv[1]} - Autor: {liv[2]} - Categoria: {liv[3]} \n')
-
+                while True:
+                    while True:
+                        idlivroescolhido = input('Digite o ID: ')
+                        sqlid = f'''SELECT * FROM livros
+                                    WHERE id = {idlivroescolhido}'''
+                        resultadoid = visualizarBanco(sqlid)
+                        if resultadoid == []:
+                            print ("ID não Existe")
+                        else:
+                            for liv in resultadoid:
+                                print(f' ID: {liv[0]} - Nome: {liv[1]} - Autor: {liv[2]} - Categoria: {liv[3]} \n')
+                            break
+                    break
 
                 menuvoltar()
                          
@@ -88,10 +96,8 @@ def menuconsultarLivros ():
             
             #verificar com tarik
             case _:
-                print (f'Digite uma opção válida')
-                
-              
-        
+                print (f'Digite uma opção válida!')
+                                   
 
 #-----------MENU CONSULTAR CLIENTE--------#          
 
@@ -166,6 +172,8 @@ def menuconsultarClientes ():
             case "0":
                 menuprincipal()
             
+            case _:
+                print("Digite opção válida!")
 
 
                     #CRIAR O BUSCAR NOME
@@ -553,3 +561,5 @@ def menuprincipal():
 menuprincipal() 
                   
                
+
+

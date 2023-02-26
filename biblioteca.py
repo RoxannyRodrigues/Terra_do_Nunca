@@ -52,12 +52,11 @@ def menuvoltar():
             print("Opção Inválida")
                 
 
-def menuconsultarLivros ():         #falta validar str
+def menuconsultarLivros ():         
 
-    #escolha = "0"
-    
     while True:
-        print(f'''
+        print(f''' 
+    MENU CONSULTA 
     Selecione o que deseja fazer:
     1. Consultar Todos os Livros
     2. Consultar por ID do Livro
@@ -90,15 +89,11 @@ def menuconsultarLivros ():         #falta validar str
                                 menuvoltar()
                             break
                     except ValueError:
-                        print("Digite um ID Válido")    
-               
-
-                 
+                        print("Digite um ID Válido")                                
                          
             case "0":
                 menuprincipal()
-            
-            #verificar com tarik
+                    
             case _:
                 print (f'Digite uma opção válida!')
                                    
@@ -109,68 +104,73 @@ def menuconsultarClientes ():
 
     while True:
         print(f'''
-        Selecione o que deseja fazer:
-        1. Buscar Cliente por ID
-        2. Buscar Cliente por CPF
-        3. Consultar Aluguel de Cliente
-        0. Voltar Menu Principal
-        ''')
+    Selecione o que deseja fazer:
+    1. Buscar Cliente por ID
+    2. Buscar Cliente por CPF
+    3. Consultar Aluguel de Cliente
+    0. Voltar Menu Principal
+    ''')
         escolha = input("Digite: ")
 
         match escolha:
             case "1":
-                iddocliente = input("Digite o ID: ")
-                sqlcliente = f'''SELECT * FROM cliente
-                            WHERE id = {iddocliente} '''
-                resultadoidcliente = visualizarBanco(sqlcliente)
-                for liv in resultadoidcliente:
-                    print(f' ID: {liv[0]} - Nome: {liv[1]} - Cpf: {liv[2]} - Limite de Livros: {liv[3]} \n')
-
-                print(f'''Que deseja fazer agora?
-        1. Voltar
-        2. Volta Menu Principal''')
-                escolhafinal = input("Digite: ")
-                match escolhafinal:
-                    case "1":
-                            print("")
-                    case "2":
-                        menuprincipal()
+                while True:
+                    iddocliente = input("Digite o ID: ")
+                    try:
+                        iddocliente = int(iddocliente)
+                        sqlcliente = f'''SELECT * FROM cliente
+                                    WHERE id = {iddocliente} '''
+                        resultadoidcliente = visualizarBanco(sqlcliente)
+                        if resultadoidcliente == []:
+                            print ("ID não Existe")
+                        else:
+                            for liv in resultadoidcliente:
+                                print(f' ID: {liv[0]} - Nome: {liv[1]} - Cpf: {liv[2]} - Limite de Livros: {liv[3]} \n')
+                                menuvoltar()
                         break
 
-            
+                    except ValueError:
+                        print("Digite um ID Válido") 
+           
             case "2":
-                cpfdocliente = input("Digite o CPF: ")
-                sqlcliente = f'''SELECT * FROM cliente
-                            WHERE cpf = {cpfdocliente}'''
-                resultadocpfcliente = visualizarBanco(sqlcliente)
-                for liv in resultadocpfcliente:
-                    print(f' ID: {liv[0]} - Nome: {liv[1]} - Cpf: {liv[2]} - Limite de Livros: {liv[3]} \n')
-
-                print(f'''Que deseja fazer agora?
-        1. Voltar
-        2. Volta Menu Principal''')
-                escolhafinal = input("Digite: ")
-                match escolhafinal:
-                    case "1":
-                            print("")
-                    case "2":
-                        menuprincipal()
+                while True:
+                    cpfdocliente = input("Digite o CPF: ")
+                    try:
+                        sqlcpfcliente = f'''SELECT * FROM cliente
+                                    WHERE cpf = {cpfdocliente}'''
+                        resultadocpfcliente = visualizarBanco(sqlcpfcliente)
+                        if resultadocpfcliente == []:
+                            print ({resultadocpfcliente})
+                        else:
+                            for liv in resultadocpfcliente:
+                                    print(f' ID: {liv[0]} - Nome: {liv[1]} - Cpf: {liv[2]} - Limite de Livros: {liv[3]} \n')
+                                    menuvoltar()
                         break
+
+                    except Exception as error:
+                            print("Digite um CPF Válido")                     
             
             case "3":
-                id_cliente_consulta = input("Digite o ID do cliente: ")
-                sql_consulta_aluguel = f'''SELECT * FROM aluguel
-                                           WHERE `id cliente` = {id_cliente_consulta} '''
-                resultadoidaluguel = visualizarBanco(sql_consulta_aluguel)
-                for liv in resultadoidaluguel: 
-                    (f' ID: {liv[0]} - Data Aluguel: {liv[1]} - ID cliente: {liv[2]} - ID livro: {liv[3]} \n')
+                while True:
+                    id_cliente_consulta = input("Digite o ID do cliente: ")
+                    try:
+                        sql_consulta_aluguel = f'''SELECT * FROM aluguel
+                                                WHERE `id cliente` = {id_cliente_consulta} '''
+                        resultadoidaluguel = visualizarBanco(sql_consulta_aluguel)
+                        for liv in resultadoidaluguel: 
+                            (f' ID: {liv[0]} - Data Aluguel: {liv[1]} - ID cliente: {liv[2]} - ID livro: {liv[3]} \n')
 
 
-                sql_consulta_livro_alugado = f'''SELECT nome FROM livros WHERE id = {liv[3]}'''
-                resultadoidlivro = visualizarBanco(sql_consulta_livro_alugado)
-              
-                for Alug2 in resultadoidlivro:
-                    print (f' Livro: {Alug2[0]} ')
+                        sql_consulta_livro_alugado = f'''SELECT nome FROM livros WHERE id = {liv[3]}'''
+                        resultadoidlivro = visualizarBanco(sql_consulta_livro_alugado)
+                    
+                        for Alug2 in resultadoidlivro:
+                            print (f' Livro: {Alug2[0]} ')
+                            menuvoltar()
+                        break
+                    
+                    except Exception as error:
+                        print("Digite ID válido")
 
             
             case "0":
@@ -182,34 +182,7 @@ def menuconsultarClientes ():
 
                     #CRIAR O BUSCAR NOME
 
-#-----------MENU CONSULTAR Aluguel--------#         
-
-def menuconsultarAluguel ():
-    escolhanovoAluguel = input("Digite: ")
-    match escolhanovoAluguel:
-
-        case "1":
-            iddoaluguel = input("Digite o ID do aluguel: ")
-            sqldealuguel = f'''SELECT * FROM aluguel
-                            WHERE id = {iddoaluguel} '''
-            resultadoidaluguel = visualizarBanco(sqldealuguel)
-            for liv in resultadoidaluguel: 
-                (f' ID: {liv[0]} - Data Aluguel: {liv[1]} - ID cliente: {liv[2]} - ID livro: {liv[3]} \n')
-
-
-            sqlclientealugado = f'''SELECT * FROM cliente WHERE id = {liv[2]}'''
-            resultadoidcliente = visualizarBanco(sqlclientealugado)
-
-
-            sqllivroAlugado = f'''SELECT nome FROM livros WHERE id = {liv[3]}'''
-            resultadoidlivro = visualizarBanco(sqllivroAlugado)
-
-            for Alug in resultadoidcliente:
-                print(f' ID: {Alug[0]} - Nome: {Alug[1]} - CPF: {Alug[2]} \n')
-            
-            for Alug2 in resultadoidlivro:
-                print (f' Livro: {Alug2[0]} ')
-
+      
 
 #-----------MENU CADASTRAOS LIVROS--------# 
 
@@ -477,36 +450,40 @@ def menualuguel():
 
 
             case "3": #DEVOLUÇÃO
-                    iddoaluguel = input("Digite o ID do aluguel: ")
-                    sqldealuguel = f'''SELECT * FROM aluguel
-                                    WHERE id = {iddoaluguel} '''
-                    resultadoidaluguel = visualizarBanco(sqldealuguel)
-                    for liv in resultadoidaluguel:
-                            print(f' ID: {liv[0]} - Data Aluguel: {liv[1]} - ID cliente: {liv[2]} - ID livro: {liv[3]} \n')
+                iddoaluguel = input("Digite o ID do aluguel: ")
+                sqldealuguel = f'''SELECT * FROM aluguel
+                                WHERE id = {iddoaluguel} '''
+                resultadoidaluguel = visualizarBanco(sqldealuguel)
+                for liv in resultadoidaluguel: 
+                    (f' ID: {liv[0]} - Data Aluguel: {liv[1]} - ID cliente: {liv[2]} - ID livro: {liv[3]} \n')
 
-                    print (f'''
 
-    Confira a Devolução?
-    1. SIM
-    2. Não''')
+                sqlclientealugado = f'''SELECT * FROM cliente WHERE id = {liv[2]}'''
+                resultadoidcliente = visualizarBanco(sqlclientealugado)
 
-                    opcaoescolhida = input("Digite: ")
-                    match opcaoescolhida:
-                        case "1":
-                            deletaraluguel = f'''DELETE FROM livros WHERE id = "{iddoaluguel}"'''
+
+                sqllivroAlugado = f'''SELECT nome FROM livros WHERE id = {liv[3]}'''
+                resultadoidlivro = visualizarBanco(sqllivroAlugado)
+
+                for Alug in resultadoidcliente:
+                    print(f' ID: {Alug[0]} - Nome: {Alug[1]} - CPF: {Alug[2]} \n')
+                
+                for Alug2 in resultadoidlivro:
+                    print (f' Livro: {Alug2[0]} ')
+
+                print('''Confirma a Devolução: 
+                    1. SIM
+                    2. Não''')
+
+                opcaoescolhida = input("Digite: ")
+                match opcaoescolhida:
+                    case "1":
+                            deletaraluguel = f'''DELETE FROM aluguel WHERE id = "{iddoaluguel}"'''
                             manipularBanco(deletaraluguel)
                         
-                        case "2":
-                            print(f'''Que deseja fazer agora?
-    1. Voltar
-    2. Volta Menu Principal''')
-                            escolhafinal = input("Digite: ")
-                            match escolhafinal:
-                                case "1":
-                                    print("")
-                                case "2":
-                                    menuprincipal()
-                                    break
+                    case "2":
+                            menuvoltar
+
 
 
                         
@@ -537,7 +514,7 @@ def menuprincipal():
                 case "2":
                     menuconsultarClientes()
                 case "3":
-                    menuconsultarAluguel
+                    menualuguel()
                 case "0":
                     menuprincipal()
         
